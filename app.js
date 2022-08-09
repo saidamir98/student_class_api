@@ -29,8 +29,8 @@ const studentRouter = require('./routers/student')
 const classRouter = require('./routers/class')
 const studentClassesRouter = require('./routers/student_classes')
 
-app.use('/student', studentRouter)
-app.use('/class', classRouter)
+app.use('/student', studentRouter.router)
+app.use('/class', classRouter.router)
 app.use(studentClassesRouter)
 
 app.listen(PORT, () => {

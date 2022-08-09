@@ -1,28 +1,8 @@
 const express = require('express')
 
 const router = express.Router()
-let inMemoryData = {
-    classes: [
-        {
-            id: 101,
-            title: "Math",
-            created_at: new Date(),
-            updated_at: new Date(),
-        },
-        {
-            id: 102,
-            title: "Music",
-            created_at: new Date(),
-            updated_at: new Date(),
-        },
-        {
-            id: 103,
-            title: "IT",
-            created_at: new Date(),
-            updated_at: new Date(),
-        }
-    ]
-}
+
+let data = require('./../db/data.js')
 
 router.post('/', (req, res) => {
     let body = req.body
@@ -32,8 +12,8 @@ router.post('/', (req, res) => {
         return
     }
 
-    for (let i = 0; i < inMemoryData.classes.length; i++) {
-        const element = inMemoryData.classes[i];
+    for (let i = 0; i < data.classes.length; i++) {
+        const element = data.classes[i];
         if (element.id == body.id) {
             res.status(400).send(`id:${body.id} class exists`);
             return
@@ -41,7 +21,7 @@ router.post('/', (req, res) => {
     }
 
     body.created_at = new Date()
-    inMemoryData.classes.push(body)
+    data.classes.push(body)
 
     res.status(201).send("successfully created")
 })
@@ -53,7 +33,7 @@ router.get('/', (req, res) => {
         search = ""
     }
 
-    let list = inMemoryData.classes.filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
+    let list = data.classes.filter(e => e.title.toLowerCase().includes(search.toLowerCase()))
 
     if (list.length == 0) {
         res.status(404).send("classes resource not found!")
@@ -66,7 +46,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     let id = req.params.id
 
-    let contact = inMemoryData.classes.find(e => e.id == id)
+    let contact = data.classes.find(e => e.id == id)
     if (!contact) {
         res.status(400).send(`id:${id} class doesn't exist`);
         return
@@ -78,19 +58,19 @@ router.get('/:id', (req, res) => {
 router.put('/', (req, res) => {
     let body = req.body
 
-    let contact = inMemoryData.classes.find(e => e.id == body.id)
+    let contact = data.classes.find(e => e.id == body.id)
 
     if (!contact) {
         res.status(400).send(`id:${body.id} class doesn't exist!`);
         return
     }
 
-    for (let i = 0; i < inMemoryData.classes.length; i++) {
-        const element = inMemoryData.classes[i];
+    for (let i = 0; i < data.classes.length; i++) {
+        const element = data.classes[i];
         if (element.id == body.id) {
-            body.created_at = inMemoryData.classes[i].created_at
+            body.created_at = data.classes[i].created_at
             body.updated_at = new Date()
-            inMemoryData.classes[i] = body
+            data.classes[i] = body
             break;
         }
     }
@@ -101,15 +81,15 @@ router.put('/', (req, res) => {
 router.delete('/:id', (req, res) => {
     let id = req.params.id
 
-    let contact = inMemoryData.classes.find(e => e.id == id)
+    let contact = data.classes.find(e => e.id == id)
     if (!contact) {
         res.status(400).send(`id:${id} class doesn't exist!`);
         return
     }
 
-    inMemoryData.classes = inMemoryData.classes.filter(e => e.id != id)
+    data.classes = data.classes.filter(e => e.id != id)
 
     res.status(200).send("successfully deleted")
 })
 
-module.exports = router
+module.exports = {router, data}
