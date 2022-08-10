@@ -2,11 +2,11 @@ const express = require('express')
 
 const router = express.Router()
 
-let data = require('./../db/data.js')
+let db = require('./../db/data.js')
 
 router.post('/', (req, res) => {
     let body = req.body
-
+    let data =  db.readData()
     if (!body.name) {
         res.status(400).send("name field is required");
         return
@@ -27,11 +27,13 @@ router.post('/', (req, res) => {
 
     body.created_at = new Date()
     data.students.push(body)
+    db.writeData(data)
 
     res.status(201).send("successfully created")
 })
 
 router.get('/', (req, res) => {
+    let data =  db.readData()
     let search = req.query.search
 
     if (!search) {
@@ -50,7 +52,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     let id = req.params.id
-
+    let data =  db.readData()
     let contact = data.students.find(e => e.id == id)
     if (!contact) {
         res.status(400).send(`id:${id} student doesn't exist`);
@@ -61,6 +63,7 @@ router.get('/:id', (req, res) => {
 })
 
 router.put('/', (req, res) => {
+    let data =  db.readData()
     let body = req.body
 
     let contact = data.students.find(e => e.id == body.id)
@@ -80,21 +83,24 @@ router.put('/', (req, res) => {
         }
     }
 
+    db.writeData(data)
     res.status(200).send("successfully updated")
 })
 
 router.delete('/:id', (req, res) => {
     let id = req.params.id
+    let data =  db.readData()
 
     let contact = data.students.find(e => e.id == id)
     if (!contact) {
         res.status(400).send(`id:${id} student doesn't exist!`);
         return
     }
-
+   
     data.students = data.students.filter(e => e.id != id)
+    db.writeData(data)
 
     res.status(200).send("successfully deleted")
 })
 
-module.exports = {data, router}
+module.exports = {router}

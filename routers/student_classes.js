@@ -2,11 +2,13 @@ const express = require('express')
 
 const router = express.Router()
 
-let data = require('./../db/data.js')
+let db = require('./../db/data.js')
 
 router.post('/student_class/:sid/:cid', (req, res)=> {
     let student_id = parseInt(req.params.sid)
     let class_id = parseInt(req.params.cid)
+
+    let data = db.readData()
 
     if (!student_id) {
         res.status(400).send("student_id is required");
@@ -32,12 +34,16 @@ router.post('/student_class/:sid/:cid', (req, res)=> {
         joined_at: new Date()
     })
 
+    db.writeData(data)
+    
     res.status(201).send("successfully created")
 })
 
 router.delete('/student_class/:sid/:cid', (req, res)=> {
     let student_id = parseInt(req.params.sid)
     let class_id = parseInt(req.params.cid)
+
+    let data=db.readData()
 
     if (!student_id) {
         res.status(400).send("student_id is required");
@@ -56,6 +62,7 @@ router.delete('/student_class/:sid/:cid', (req, res)=> {
     }
 
     data.student_classes = data.student_classes.filter(e => e.student_id != student_id || e.class_id != class_id)
+    db.writeData(data)
 
     res.status(200).send("successfully deleted")
 })
@@ -66,23 +73,23 @@ const studentRouter = require('./student')
 router.get('/student_class/:sid', (req, res)=> {
     let student_id = parseInt(req.params.sid)
     
-    let student = studentRouter.data.students.find(e => e.id == student_id)
+    let student = studentRouter.db.readData().students.find(e => e.id == student_id)
 
     if (!student) {
         res.status(400).send("student_id is required");
         return
     }
 
-    let studentClassList = data.student_classes.filter(e => e.student_id == student.id)
+    let studentClassList = db.readData().student_classes.filter(e => e.student_id == student.id)
     if (!studentClassList.length) {
         res.status(400).send(`student_id:${student_id} doesn't have classes`);
         return
     }
     
     studentClassList.forEach(e => {
-        for (let i = 0; i < classRouter.data.classes.length; i++) {
-            if (e.class_id == classRouter.data.classes[i].id) {
-                e.class = classRouter.data.classes[i]
+        for (let i = 0; i < classRouter.db.readData().classes.length; i++) {
+            if (e.class_id == classRouter.db.readData().classes[i].id) {
+                e.class = classRouter.db.readData().classes[i]
                 break
             }
         }

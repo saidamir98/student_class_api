@@ -1,0 +1,67 @@
+{
+	"classes": [
+		{
+			"id": 101,
+			"title": "Math",
+			"created_at": "2022-08-10T14:38:18.614Z",
+			"updated_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"id": 102,
+			"title": "Music",
+			"created_at": "2022-08-10T14:38:18.614Z",
+			"updated_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"id": 103,
+			"title": "IT",
+			"created_at": "2022-08-10T14:38:18.614Z",
+			"updated_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"id": 104,
+			"title": "English",
+			"created_at": "2022-08-10T14:42:55.088Z"
+		}
+	],
+	"students": [
+		{
+			"id": 1,
+			"name": "John Doe",
+			"email": "john.doe@example.com",
+			"created_at": "2022-08-10T14:38:18.614Z",
+			"updated_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"id": 2,
+			"name": "Steve Jobs",
+			"email": "steve.jobs@example.com",
+			"created_at": "2022-08-10T14:38:18.614Z",
+			"updated_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"id": 3,
+			"name": "Bill Gates",
+			"email": "bill.gates@example.com",
+			"created_at": "2022-08-10T14:38:18.614Z",
+			"updated_at": "2022-08-10T14:38:18.614Z"
+		}
+	],
+	"student_classes": [
+		{
+			"student_id": 1,
+			"class_id": 102,
+			"joined_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"student_id": 1,
+			"class_id": 101,
+			"joined_at": "2022-08-10T14:38:18.614Z"
+		},
+		{
+			"student_id": 3,
+			"class_id": 103,
+			"joined_at": "2022-08-10T14:38:18.614Z"
+		}
+	]
+}
